@@ -46,12 +46,13 @@ class Player(pygame.sprite.Sprite):
         self.tree_sprites = tree_sprites
 
     def use_tool(self):
-        print('tool use')
+        
         if self.selected_tool == 'hoe':
                     pass
 
         if self.selected_tool == 'axe':
             for tree in self.tree_sprites.sprites():
+                print(f'self.target_pos before collidepoint: {self.target_pos}, type: {type(self.target_pos)}')
                 if tree.rect.collidepoint(self.target_pos):
                     tree.damage()
                     
@@ -61,8 +62,10 @@ class Player(pygame.sprite.Sprite):
 
 
     def get_target_pos(self):
+        
+        offset = PLAYER_TOOL_OFFSETS[self.status.split('_')[0]]
+        self.target_pos = (self.rect.center[0] + offset[0], self.rect.center[1] + offset[1])
 
-        self.target_pos = self.rect.center + PLAYER_TOOL_OFFSETS[self.status.split('_')[0]]
             
 
     def use_seed(self):
@@ -199,7 +202,6 @@ class Player(pygame.sprite.Sprite):
         self.get_status()
         self.get_target_pos()
         self.update_timers()
-
         self.move(dt)
         self.animate(dt)
 
