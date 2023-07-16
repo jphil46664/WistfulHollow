@@ -197,8 +197,8 @@ class Player(pygame.sprite.Sprite):
     def update(self, dt):
         self.input()
         self.get_status()
-        self.update_timers()
         self.get_target_pos()
+        self.update_timers()
 
         self.move(dt)
         self.animate(dt)
