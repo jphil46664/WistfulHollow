@@ -2,6 +2,8 @@ import pygame
 from settings import *
 from support import *
 from timer import Timer
+import time
+
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group, collision_sprites, tree_sprites):
@@ -42,17 +44,24 @@ class Player(pygame.sprite.Sprite):
         self.seed_index = 0
         self.selected_seed = self.seeds[self.seed_index]
         
+        #inventory
+        self.item_inventory = {
+            'corn':   0,
+            'tomato': 0,
+            'apple':  0,
+            'wood':   0,}
+
         #interactions
         self.tree_sprites = tree_sprites
 
+
     def use_tool(self):
-        
+        #print(f"Target position in use_tool: {self.target_pos}")
         if self.selected_tool == 'hoe':
                     pass
 
         if self.selected_tool == 'axe':
             for tree in self.tree_sprites.sprites():
-                print(f'self.target_pos before collidepoint: {self.target_pos}, type: {type(self.target_pos)}')
                 if tree.rect.collidepoint(self.target_pos):
                     tree.damage()
                     
@@ -62,10 +71,13 @@ class Player(pygame.sprite.Sprite):
 
 
     def get_target_pos(self):
-        
-        offset = PLAYER_TOOL_OFFSETS[self.status.split('_')[0]]
-        self.target_pos = (self.rect.center[0] + offset[0], self.rect.center[1] + offset[1])
+        #offset = PLAYER_TOOL_OFFSETS[self.status.split('_')[0]]
+        #self.target_pos = (self.rect.center[0] + offset[0], self.rect.center[1] + offset[1])
 
+        self.target_pos = self.rect.center + PLAYER_TOOL_OFFSETS[self.status.split('_')[0]]
+
+        #print(f"Target position in get_target_pos: {self.target_pos}")
+    
             
 
     def use_seed(self):
@@ -160,24 +172,25 @@ class Player(pygame.sprite.Sprite):
 
 
     def collision(self, direction):
-        for sprite in self.collision_sprites.sprites():
-            if hasattr(sprite, 'hitbox'):
-                if self.hitbox.colliderect(sprite.hitbox):
-                    if direction == 'horizontal':
-                        if self.direction.x > 0: #if player is moving right
-                            self.hitbox.right = sprite.hitbox.left
-                        if self.direction.x < 0:
-                            self.hitbox.left = sprite.hitbox.right
-                        self.rect.centerx = self.hitbox.centerx
-                        self.pos.x = self.hitbox.centerx
+            for sprite in self.collision_sprites.sprites():
+                if hasattr(sprite, 'hitbox'):
+                    if sprite.hitbox.colliderect(self.hitbox):
+                        if direction == 'horizontal':
+                            if self.direction.x > 0: # moving right
+                                self.hitbox.right = sprite.hitbox.left
+                            if self.direction.x < 0: # moving left
+                                self.hitbox.left = sprite.hitbox.right
+                            self.rect.centerx = self.hitbox.centerx
+                            self.pos.x = self.hitbox.centerx
 
-                    if direction == 'vertical':
-                        if self.direction.y > 0:
-                            self.hitbox.bottom = sprite.hitbox.top
-                        if self.direction.y < 0:
-                            self.hitbox.top = sprite.hitbox.bottom
-                        self.rect.centery = self.hitbox.centery
-                        self.pos.y = self.hitbox.centery
+                        if direction == 'vertical':
+                            if self.direction.y > 0: # moving down
+                                self.hitbox.bottom = sprite.hitbox.top
+                            if self.direction.y < 0: # moving up
+                                self.hitbox.top = sprite.hitbox.bottom
+                            self.rect.centery = self.hitbox.centery
+                            self.pos.y = self.hitbox.centery
+
 
     def move(self, dt):
         
@@ -200,8 +213,9 @@ class Player(pygame.sprite.Sprite):
     def update(self, dt):
         self.input()
         self.get_status()
-        self.get_target_pos()
         self.update_timers()
+        self.get_target_pos()
+
         self.move(dt)
         self.animate(dt)
 
