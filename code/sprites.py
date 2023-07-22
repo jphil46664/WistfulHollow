@@ -11,8 +11,14 @@ class Generic(pygame.sprite.Sprite):
         self.image = surf
         self.rect = self.image.get_rect(topleft = pos)
         self.z = z
-        self.hitbox = self.rect.copy().inflate(-self.rect.width * 0.2, -self.rect.height * 0.75)
+        self.hitbox = self.rect.copy().inflate(-self.rect.width * 0.25, -self.rect.height * 0.8)
 
+
+class Interaction(Generic):
+    def __init__(self, pos, size, groups, name):
+        surf = pygame.Surface(size)
+        super().__init__(pos, surf, groups)
+        self.name = name
 
 class Water(Generic):
     def __init__(self, pos, frames, groups):
@@ -43,7 +49,8 @@ class WildFlower(Generic):
     def __init__(self, pos, surf, groups):
         super().__init__(pos, surf, groups)
         self.hitbox = self.rect.copy().inflate(-20, -self.rect.height * 0.9)
-                
+
+
 class Particle(Generic):
     def __init__(self, pos, surf, groups, z, duration = 200):
         super().__init__(pos, surf, groups, z)
@@ -78,7 +85,7 @@ class Tree(Generic):
         self.apples_Surface = pygame.image.load('C:/Users/phili/OneDrive/Desktop/HorrorValley/graphics/fruit/apple.png')
         self.apple_pos = APPLE_POS[name]
         self.apple_sprites = pygame.sprite.Group()
-        self.creat_fruit()
+        self.create_fruit()
 
         self.player_add = player_add
 
@@ -120,7 +127,7 @@ class Tree(Generic):
         if self.alive:
             self.check_death()
             
-    def creat_fruit(self):
+    def create_fruit(self):
         for pos in self.apple_pos:
             if randint(0, 10) < 1:
                 x = pos[0] + self.rect.left
