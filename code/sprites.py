@@ -129,7 +129,7 @@ class Tree(Generic):
             
     def create_fruit(self):
         for pos in self.apple_pos:
-            if randint(0, 10) < 1:
+            if randint(0, 10) < 5:
                 x = pos[0] + self.rect.left
                 y = pos[1] + self.rect.top
                 Generic(

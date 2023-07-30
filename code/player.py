@@ -3,6 +3,7 @@ from settings import *
 from support import *
 from timer import Timer
 import time
+from soil import *
 
 
 class Player(pygame.sprite.Sprite):
@@ -70,7 +71,7 @@ class Player(pygame.sprite.Sprite):
                     
             
         if self.selected_tool == 'water':
-            pass
+            self.soil_layer.water(self.target_pos)
 
 
     def get_target_pos(self):
@@ -84,7 +85,7 @@ class Player(pygame.sprite.Sprite):
             
 
     def use_seed(self):
-        pass
+        self.soil_layer.plant_seed(self.target_pos, self.selected_seed)
 
 
     def import_assets (self):

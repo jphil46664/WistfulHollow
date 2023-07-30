@@ -13,8 +13,8 @@ OVERLAY_POSITIONS = {
 }
 
 PLAYER_TOOL_OFFSETS = {
-    'right': Vector2(-50,40),
-    'left': Vector2(50,40),
+    'right': Vector2(50,40),
+    'left': Vector2(-50,40),
     'up': Vector2(0,-10),
     'down': Vector2(0,50),
 }
