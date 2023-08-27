@@ -31,13 +31,21 @@ class Level:
 
         #sky
         self.rain = Rain(self.all_sprites)
-        self.raining = randint(0,10) > 3
+        self.raining = randint(0,10) > 5
         self.soil_layer.raining = self.raining
         self.sky = Sky()
 
         #shop
         self.menu = Menu(self.player, self.toggle_shop)
         self.shop_active = False
+
+        #sound
+        self.succes = pygame.mixer.Sound('C:/Users/phili/OneDrive/Desktop/HorrorValley/audio/success.wav')
+        self.succes.set_volume(0.3)
+
+        self.music = pygame.mixer.Sound('C:/Users/phili/OneDrive/Desktop/HorrorValley/audio/bg.wav')
+        self.music.play(loops=-1)
+        self.music.set_volume(0.8)
 
     def setup(self):
 
@@ -108,6 +116,7 @@ class Level:
         
     def player_add(self, item):
         self.player.item_inventory[item] += 1
+        self.succes.play()
 
     def toggle_shop(self):
 
@@ -120,7 +129,7 @@ class Level:
 
         #soil
         self.soil_layer.remove_water()
-        self.raining = randint(0,10) > 3
+        self.raining = randint(0,10) > 5
         self.soil_layer.raining = self.raining
         if self.raining:
             self.soil_layer.water_all()
